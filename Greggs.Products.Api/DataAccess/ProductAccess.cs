@@ -21,9 +21,14 @@ public class ProductAccess : IDataAccess<Product>
         new() { Name = "Coca Cola", PriceInPounds = 1.2m }
     };
 
-    public IEnumerable<Product> List(int? pageStart, int? pageSize)
+    public IEnumerable<Product> GetMenu(int? pageStart, int? pageSize)
     {
         var queryable = ProductDatabase.AsQueryable();
+
+        if (pageSize > queryable.Count())
+        {
+            pageSize = queryable.Count();
+        }
 
         if (pageStart.HasValue)
             queryable = queryable.Skip(pageStart.Value);
